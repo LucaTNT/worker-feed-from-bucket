@@ -1,0 +1,20 @@
+name = "worker-feed-from-bucket"
+type = "webpack"
+
+account_id = "YOUR_ACCOUNT_ID"
+workers_dev = true
+route = "yoursite.com/feed"
+zone_id = "YOUR_ZONE_ID"
+
+[vars]
+AWS_DEFAULT_REGION = ""
+AWS_S3_BUCKET = "my-s3.endpoint.com"
+BUCKET_PUBLIC_URL = "https://mypodcast.com/file/mp3/"
+PODCAST_TITLE = "Your podcast"
+PODCAST_DESCRIPTION = "A nice podcast hosted on S3"
+PODCAST_IMAGE = "https://mypodcast.com/image.jpg"
+PODCAST_IMAGE_WIDTH = "400"
+PODCAST_IMAGE_HEIGHT = "400"
+
+# Secrets AWS_SECRET_ACCESS_KEY and AWS_ACCESS_KEY_ID were added by running
+# wrangler secret put VARIABLE_NAME

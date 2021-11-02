@@ -13,26 +13,28 @@ addEventListener('fetch', function(event) {
     event.respondWith(handleRequest(event.request))
 });
 
+const PUBLIC_URL = BUCKET_PUBLIC_URL || `https://${AWS_S3_BUCKET}/`
+
 function createFeed(files) {
     var rss = `<rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0">
     <channel>
-        <title>BreakingItaly</title>
-        <description>Il podcast</description>
+        <title>${PODCAST_TITLE}</title>
+        <description>${PODCAST_DESCRIPTION}</description>
         <lastBuildDate>${new Date().toISOString()}</lastBuildDate>
         <image>
-            <url>https://albertozorzi.it/breaking.jpg</url>
-            <width>480</width>
-            <height>480</height>
+            <url>${PODCAST_IMAGE}</url>
+            <width>${PODCAST_IMAGE_WIDTH}</width>
+            <height>${PODCAST_IMAGE_HEIGHT}</height>
         </image>
-        <itunes:image href="https://albertozorzi.it/breaking.jpg" />\n`;
+        <itunes:image href="${PODCAST_IMAGE}" />\n`;
 
     files.forEach(file => {
         rss += '        <item>\n';
         rss += `            <title>${file.title}</title>\n`
-        rss += `            <link>https://breakingitaly.albertozorzi.it/file/breakingitalymp3/${file.title}</link>\n`
+        rss += `            <link>${file.url}</link>\n`
         rss += `            <pubDate>${file.pubDate}</pubDate>\n`
-        rss += `            <guid isPermaLink="false">https://breakingitaly.albertozorzi.it/file/breakingitalymp3/${file.title}</guid>\n`
-        rss += `            <enclosure url="https://breakingitaly.albertozorzi.it/file/breakingitalymp3/${file.title}" length="${file.size}" type="audio/mpeg" />\n`
+        rss += `            <guid isPermaLink="false">${file.url}</guid>\n`
+        rss += `            <enclosure url="${file.url}" length="${file.size}" type="audio/mpeg" />\n`
         rss += '        </item>\n';
     });
 
@@ -56,15 +58,18 @@ async function handleRequest(request) {
         else resolve(result);
     }));
 
-    var contents = result['ListBucketResult']['Contents'];
+    if ('Contents' in result['ListBucketResult']) {
+        const contents = result['ListBucketResult']['Contents'];
 
-    contents.forEach(element => {
-        files.push({
-            "title": element['Key'][0],
-            "pubDate": element['LastModified'][0],
-            "size": element['Size'][0]
+        contents.forEach(element => {
+            files.push({
+                "title": element['Key'][0],
+                "pubDate": element['LastModified'][0],
+                "size": element['Size'][0],
+                "url": `${PUBLIC_URL}${element['Key'][0]}`
+            })
         })
-    })
+    }
 
     return new Response(createFeed(files), {
         headers: {
