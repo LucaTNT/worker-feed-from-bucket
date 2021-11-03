@@ -17,9 +17,6 @@ Configuration is done through environment variables:
 * `PODCAST_IMAGE_HEIGHT`: The height of `PODCAST_IMAGE`
 
 #### Wrangler
+Generation using [wrangler](https://github.com/cloudflare/wrangler) (`wrangler generate projectname https://github.com/LucaTNT/worker-feed-from-bucket`) is currently not supported due to this repo using the "main" branch as opposed to the "master" branch that wrangler is expecting.
 
-To generate using [wrangler](https://github.com/cloudflare/wrangler)
-
-```
-wrangler generate projectname https://github.com/LucaTNT/worker-feed-from-bucket
-```
+After you cloned the repo you can push it to cloudflare by running `wrangler publish`.
