@@ -15,7 +15,7 @@ Configuration is done through environment variables:
 * `PODCAST_IMAGE`: The URL of an image to be used as the podcast album art.
 * `PODCAST_IMAGE_WIDTH`: The width of `PODCAST_IMAGE`
 * `PODCAST_IMAGE_HEIGHT`: The height of `PODCAST_IMAGE`
-* 
+
 #### Wrangler
 
 To generate using [wrangler](https://github.com/cloudflare/wrangler)
