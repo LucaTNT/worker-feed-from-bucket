@@ -63,7 +63,7 @@ async function handleRequest(request) {
 
         contents.forEach(element => {
             files.push({
-                "title": element['Key'][0],
+                "title": encodeURIComponent(element['Key'][0]),
                 "pubDate": element['LastModified'][0],
                 "size": element['Size'][0],
                 "url": `${PUBLIC_URL}${encodeURIComponent(element['Key'][0])}`
@@ -73,7 +73,7 @@ async function handleRequest(request) {
 
     return new Response(createFeed(files), {
         headers: {
-          "content-type": "application/rss;charset=UTF-8",
+          "content-type": "application/rss+xml;charset=UTF-8",
       }})
 
     // return await fetch(signedRequest, { "cf": { "cacheEverything": true } });
