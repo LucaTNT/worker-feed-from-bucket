@@ -66,7 +66,7 @@ async function handleRequest(request) {
                 "title": element['Key'][0],
                 "pubDate": element['LastModified'][0],
                 "size": element['Size'][0],
-                "url": `${PUBLIC_URL}${element['Key'][0]}`
+                "url": `${PUBLIC_URL}${encodeURIComponent(element['Key'][0])}`
             })
         })
     }
