@@ -63,7 +63,7 @@ async function handleRequest(request) {
 
         contents.forEach(element => {
             files.push({
-                "title": "!<[CDATA[" + element['Key'][0] + "]]>",
+                "title": `!<[CDATA[${element['Key'][0]}]]>`,
                 "pubDate": element['LastModified'][0],
                 "size": element['Size'][0],
                 "url": `${PUBLIC_URL}${encodeURIComponent(element['Key'][0])}`
