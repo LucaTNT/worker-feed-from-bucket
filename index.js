@@ -4,8 +4,8 @@ const xml2js = require('xml2js');
 const parser = new xml2js.Parser({ attrkey: "ATTR" });
 
 const aws = new AwsClient({
-    "accessKeyId": AWS_ACCESS_KEY_ID,
-    "secretAccessKey": AWS_SECRET_ACCESS_KEY,
+    "accessKeyId": (globalThis.AWS_ACCESS_KEY_ID || ''), // This is required when creating a new environment that doesn't yet have secrets in place
+    "secretAccessKey": (globalThis.AWS_SECRET_ACCESS_KEY || ''),
     "region": AWS_DEFAULT_REGION,
 });
 
