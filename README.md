@@ -19,4 +19,9 @@ Configuration is done through environment variables:
 #### Wrangler
 Generation using [wrangler](https://github.com/cloudflare/wrangler) (`wrangler generate projectname https://github.com/LucaTNT/worker-feed-from-bucket`) is currently not supported due to this repo using the "main" branch as opposed to the "master" branch that wrangler is expecting.
 
-After you cloned the repo you can push it to cloudflare by running `wrangler publish`.
+After you cloned the repo, set the required secrets containing your S3 API Keys:
+
+    wrangler secret put AWS_ACCESS_KEY_ID
+    wrangler secret put AWS_SECRET_ACCESS_KEY
+
+Then you can push it to cloudflare by running `wrangler publish`.
