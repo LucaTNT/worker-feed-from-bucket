@@ -10,6 +10,7 @@ Configuration is done through environment variables:
 * `AWS_DEFAULT_REGION`: the default S3 region. It is blank with some providers (e.g. Backblaze).
 * `AWS_S3_BUCKET`: The virtualhost-style S3 endpoint for your bucket. (e.g. `mybucket.s3.eu-west-003.backblazeb2.com` or `mybucket.s3.eu-south-1.amazonaws.com`).
 * `BUCKET_PUBLIC_URL`: The base URL of your bucket. Usually it is `https://${AWS_S3_BUCKET}`, but sometimes it is useful to change it (for example if you have Cloudflare in front of your S3 storage).
+* `SUBFOLDER`: Optional subfolder of the bucket to search files in.
 * `PODCAST_TITLE`: The title that appears on the RSS feed.
 * `PODCAST_DESCRIPTION`: The description that appears on the RSS feed.
 * `PODCAST_IMAGE`: The URL of an image to be used as the podcast album art.

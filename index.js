@@ -10,10 +10,21 @@ const aws = new AwsClient({
 });
 
 addEventListener('fetch', function(event) {
-    event.respondWith(handleRequest(event.request))
+    event.respondWith(handleRequest(event.request));
 });
 
-const PUBLIC_URL = BUCKET_PUBLIC_URL || `https://${AWS_S3_BUCKET}/`
+const PUBLIC_URL = globalThis.BUCKET_PUBLIC_URL || `https://${AWS_S3_BUCKET}/`;
+var BUCKET_SUBFOLDER = globalThis.SUBFOLDER || '';
+
+BUCKET_SUBFOLDER = (!BUCKET_SUBFOLDER.endsWith('/') && BUCKET_SUBFOLDER != '') ? `${BUCKET_SUBFOLDER}/` : BUCKET_SUBFOLDER;
+
+function createURL(object_key) {
+    if (BUCKET_SUBFOLDER != ""){
+        object_key = object_key.replace(BUCKET_SUBFOLDER, '');
+    }
+
+    return `${PUBLIC_URL}${BUCKET_SUBFOLDER}${encodeURIComponent(object_key)}`;
+}
 
 function createFeed(files) {
     var rss = `<rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0">
@@ -43,7 +54,7 @@ function createFeed(files) {
 
 async function handleRequest(request) {
     var url = new URL(`https://${AWS_S3_BUCKET}/`);
-    url.search = 'list-type=2'
+    url.search = `list-type=2&prefix=${BUCKET_SUBFOLDER}`
     var signedRequest = await aws.sign(url);
 
     var request = await fetch(signedRequest, { "cf": { "cacheEverything": true } });
@@ -63,10 +74,10 @@ async function handleRequest(request) {
 
         contents.forEach(element => {
             files.push({
-                "title": `!<[CDATA[${element['Key'][0]}]]>`,
+                "title": `<![CDATA[${element['Key'][0]}]]>`,
                 "pubDate": element['LastModified'][0],
                 "size": element['Size'][0],
-                "url": `${PUBLIC_URL}${encodeURIComponent(element['Key'][0])}`
+                "url": createURL(element['Key'][0])
             })
         })
     }
