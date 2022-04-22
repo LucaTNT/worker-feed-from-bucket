@@ -74,7 +74,7 @@ async function handleRequest(request) {
 
         contents.forEach(element => {
             files.push({
-                "title": `<![CDATA[${element['Key'][0]}]]>`,
+                "title": `<![CDATA[${element['Key'][0].replace(BUCKET_SUBFOLDER, '')}]]>`,
                 "pubDate": element['LastModified'][0],
                 "size": element['Size'][0],
                 "url": createURL(element['Key'][0])
